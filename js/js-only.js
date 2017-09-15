@@ -19,6 +19,7 @@ function show(results) {
         } while (i <= results);
     }
 }; 
+
 function paginateBy(groupBy) {
     var arr = document.querySelectorAll('li.student-item');
     var paginationString = '';
@@ -31,28 +32,35 @@ function paginateBy(groupBy) {
     } else {
         pagination.innerHTML = '';
     };
+    pagination.classList.add('pagination');
+    document.querySelector('div.page').append(pagination);
 };
 
 function filter() {
     const studentList = document.querySelectorAll('li.student-item'); //contains reference to Default student list.
 };
 
+function addSearch() {
+    const search = document.createElement('div')
+    search.classList.add('student-search');
+    document.querySelector('div.page-header').append(search);
+    const searchInput = document.createElement('input')
+    search.append(searchInput);
+    searchInput.placeholder = 'Search for Students...';
+    const searchButton = document.createElement('button')
+    search.append(searchButton);
+    searchButton.textContent = 'Search';
+};
+
 //global variables
 const pagination = document.createElement('div');
-
-//attachment, property setting, and creation of new html elements.
-    //creation
-        
-    //properties
-    pagination.classList.add('pagination');
-
-    //attachment
-    document.querySelector('div.page').append(pagination);
+    
 
 //default behavior expected
-paginateBy(10);
-hide();
-show(10);
+    paginateBy(10);
+    addSearch();
+    hide();
+    show(10);
 
 //pagination link event
 pagination.addEventListener('click', (e) => {
