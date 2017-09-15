@@ -1,15 +1,15 @@
 //functions
-function hide() {
+function hideList() {
     var arr = document.querySelectorAll('li.student-item');
     for (var i = 0; i < arr.length; i++) {
             arr[i].style.display = 'none';
     };
 };  
 
-function show(results) {
+function displayList(results) {
     var arr = document.querySelectorAll('li.student-item');
-    if (pagination.querySelector('a.active')) { //checks to see if pagination exists
-        let pageLink = pagination.querySelector('a.active').textContent;
+    if (document.querySelector('div.pagination').querySelector('a.active')){
+        let pageLink = document.querySelector('div.pagination').querySelector('a.active').textContent;
         var i = 1;
         do {
             if (arr[results * pageLink - i]) {
@@ -17,57 +17,75 @@ function show(results) {
             };
             i++;
         } while (i <= results);
-    }
+    } else {
+        for (var i = 0; i < arr.length; i++) {
+            arr[i].style.display = 'list-item';
+        };
+    };
 }; 
 
-function paginateBy(groupBy) {
+function paginateListBy(groupBy) {
     var arr = document.querySelectorAll('li.student-item');
-    var paginationString = '';
+    var paginationHTML = '';
     if (arr.length > groupBy) {
         for (var i = 0; i < arr.length / groupBy; i++) {
-            paginationString += `<li><a href="#">${i + 1}</a></li>`;
+            paginationHTML += `<li><a href="#">${i + 1}</a></li>`;
         };
-        pagination.innerHTML = `<ul>${paginationString}</ul>`;
-        pagination.querySelector('a').classList.add('active');
+        document.querySelector('div.pagination').innerHTML = `<ul>${paginationHTML}</ul>`;
+        document.querySelector('div.pagination').querySelector('a').classList.add('active');
     } else {
-        pagination.innerHTML = '';
+        document.querySelector('div.pagination').innerHTML = '';
     };
-    pagination.classList.add('pagination');
-    document.querySelector('div.page').append(pagination);
 };
 
-function filter() {
-    const studentList = document.querySelectorAll('li.student-item'); //contains reference to Default student list.
+function searchList() {
+    var searchTerm = document.querySelector('div.student-search').querySelector('input').value;
+    var searchStudentListHTML = '';
+    const message = '<p>Sorry your search returned 0 results. Please try Again</p>'
+    for (var i = 0; i < defaultList.length; i++) {
+        if (defaultList[i].querySelector('h3').textContent.includes(searchTerm)) {
+            searchStudentListHTML += defaultList[i].outerHTML;
+        };
+    };
+    if (searchStudentListHTML.length > 0) {
+        document.querySelector('ul.student-list').innerHTML = searchStudentListHTML;
+    } else {
+        document.querySelector('ul.student-list').innerHTML = message;
+    };
 };
 
-function addSearch() {
-    const search = document.createElement('div')
-    search.classList.add('student-search');
-    document.querySelector('div.page-header').append(search);
-    const searchInput = document.createElement('input')
-    search.append(searchInput);
-    searchInput.placeholder = 'Search for Students...';
-    const searchButton = document.createElement('button')
-    search.append(searchButton);
-    searchButton.textContent = 'Search';
-};
-
-//global variables
+const search = document.createElement('div')
+const searchInput = document.createElement('input')
+const searchButton = document.createElement('button')
 const pagination = document.createElement('div');
-    
+const defaultList = document.querySelectorAll('li.student-item');
 
-//default behavior expected
-    paginateBy(10);
-    addSearch();
-    hide();
-    show(10);
+search.classList.add('student-search');
+document.querySelector('div.page-header').append(search);
+search.append(searchInput);
+searchInput.placeholder = 'Search for Students...';
+search.append(searchButton);
+searchButton.textContent = 'Search';
+pagination.classList.add('pagination');
+document.querySelector('div.page').append(pagination)
+paginateListBy(10);
+hideList();
+displayList(10);
 
-//pagination link event
 pagination.addEventListener('click', (e) => {
     if (e.target.tagName == 'A') {
-        pagination.querySelector('a.active').classList.remove('active');
+        document.querySelector('div.pagination').querySelector('a.active').classList.remove('active');
         e.target.classList.add('active');
-        hide();
-        show(10);
+        hideList();
+        displayList(10);
     };
-});
+});//pagination-link Click event
+
+search.addEventListener('click', (e) => {
+    if (e.target.tagName == 'BUTTON') {
+        searchList();
+        paginateListBy(10);
+        hideList();
+        displayList(10);
+    };
+}); //student - search Click event
