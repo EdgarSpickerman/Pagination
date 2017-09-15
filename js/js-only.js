@@ -12,9 +12,11 @@ function show(results) {
         let pageLink = pagination.querySelector('a.active').textContent;
         var i = 1;
         do {
-            arr[results * pageLink - i].style.display = 'list-item';
+            if (arr[results * pageLink - i]) {
+                arr[(results * pageLink) - i].style.display = 'list-item';
+            };
             i++;
-        } while (i <= results || arr[results * pageLink - i]);
+        } while (i <= results);
     }
 }; 
 function paginateBy(groupBy) {
@@ -51,3 +53,13 @@ const pagination = document.createElement('div');
 paginateBy(10);
 hide();
 show(10);
+
+//pagination link event
+pagination.addEventListener('click', (e) => {
+    if (e.target.tagName == 'A') {
+        pagination.querySelector('a.active').classList.remove('active');
+        e.target.classList.add('active');
+        hide();
+        show(10);
+    };
+});
