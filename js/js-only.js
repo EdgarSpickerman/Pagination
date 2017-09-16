@@ -43,7 +43,7 @@ function searchList() {
     var searchStudentListHTML = '';
     const message = '<p>Sorry your search returned 0 results. Please try Again</p>'
     for (var i = 0; i < defaultList.length; i++) {
-        if (defaultList[i].querySelector('h3').textContent.includes(searchTerm)) {
+        if (defaultList[i].querySelector('h3').textContent.includes(searchTerm) || defaultList[i].querySelector('h3').textContent.includes(searchTerm) ) {
             searchStudentListHTML += defaultList[i].outerHTML;
         };
     };
