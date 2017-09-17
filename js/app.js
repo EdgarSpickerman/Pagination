@@ -31,8 +31,8 @@ function filterList() {
     const message = '<p>Sorry your search returned 0 results. Please try Again</p>'
 //mod this code   
     for (var i = 0; i < $defaultList.length; i++) {
-        if (defaultList[i].querySelector('h3').textContent.includes(searchTerm) || defaultList[i].querySelector('span.email').textContent.includes(searchTerm)) {
-            searchStudentListHTML += defaultList[i].outerHTML; //adds the array item as a string instead of object
+        if ($defaultList[i].querySelector('h3').textContent.includes(searchTerm) || $defaultList[i].querySelector('span.email').textContent.includes(searchTerm)) {
+            searchStudentListHTML += $defaultList[i].outerHTML; //adds the array item as a string instead of object
         };
     };
     if (searchStudentListHTML.length > 0) { //returns a message if no match can be found
